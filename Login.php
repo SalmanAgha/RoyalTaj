@@ -41,8 +41,7 @@
 <center>
                             <div class="login-logo">
                                 <br><br>
-                                <p style="font-size: 16px;"><strong>Rabeet222 Changed This </strong></p>
-                                    <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
+                                <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
                                 <p style="font-size: 14px;" id="date"></p>
                               <p style="font-size: 20px;" id="time" class="bold"></p>
                             </div>
