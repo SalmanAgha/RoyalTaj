@@ -42,27 +42,26 @@
          <div class="text-left">
           <div class="row">
            <div class="col-md-4">
-
              <div class="card"  style="padding:2rem; height: 12rem; border: 1px solid rgb(126 20 20 / 50%);">
               <center><h6>Searching</h6></center> 
               <table>
-                <tr>
+           <!--      <tr>
                   <td>Store</td>
                   <td>   <select class="select2 form-control  custom-select select2-hidden-accessible" style="width: 100%; height:36px;" tabindex="-1" aria-hidden="true"   id="storeid">
                     <option>Select Store</option>
                     <optgroup>
-                      <?php 
-                      include("MainConnect.php");
-                      $query = "select store from tblfbrtransactions";
-                      $stmt = sqlsrv_query($MainConnect, $query, array(), array("Scrollable" => 'static')) or die(sqlsrv_errors());
-                      while ($row = sqlsrv_fetch_array($stmt))
-                      {
-                       echo '<option value="'.$row["store"].'">'.$row["store"].'</option>';
-                     }
-                     ?>
+                     
+                     //  include("MainConnect.php");
+                     //  $query = "select store from tblfbrtransactions";
+                     //  $stmt = sqlsrv_query($MainConnect, $query, array(), array("Scrollable" => 'static')) or die(sqlsrv_errors());
+                     //  while ($row = sqlsrv_fetch_array($stmt))
+                     //  {
+                     //   echo '<option value="'.$row["store"].'">'.$row["store"].'</option>';
+                     // }
+                     
                    </optgroup>
                  </select></td>
-               </tr>
+               </tr> -->
                <tr>
                 <td>Transaction</td>
                 <td>
@@ -70,6 +69,11 @@
                   <option>Select Transaction</option>
                   <optgroup>
                     <?php 
+                    $serverName =$_SESSION['server'];
+                    $userId = $_SESSION['dbusername'];
+                    $userPassword = $_SESSION['dbpassword'];
+                    $database = $_SESSION['dbname'];
+
                     include("StoreConnect.php");
                     $query = "select distinct top 10  RTST.TRANSACTIONID
                     from  RETAILTRANSACTIONSALESTRANS RTST 
@@ -82,7 +86,7 @@
                    }
                    ?>
                  </optgroup>
-               </select>
+               </select> 
              </td>
            </tr>
            <tr>
@@ -111,21 +115,21 @@
      </table>
    </div>
  </div>
- <div class="col-md-4">
+ <div class="col-md-4" >
    <div class="card"  style="padding:2rem; height: 12rem; border: 1px solid rgb(126 20 20 / 50%);">
     <center><h6>Bill Information</h6></center> 
     <table> 
       <tr>
-        <td><h5 class="margin-zero">Amount</h5> </td><td><h5 class="margin-zero">Rs.<span id='totalamount'>80535</span></h5> </td>
+        <td><h5 class="margin-zero">Amount</h5> </td><td><h5 class="margin-zero">Rs.<span id='totalamount'>0</span></h5> </td>
       </tr>
       <tr>
-        <td><h5 class="margin-zero">Sales Tax %</h5> </td><td><h5 class="margin-zero"><span>13 %</span></h5> </td> 
+        <td><h5 class="margin-zero">Sales Tax %</h5> </td><td><h5 class="margin-zero"><span id="taxpercent">0</span>%</h5> </td> 
       </tr>
       <tr>
-        <td><h5 class="margin-zero">Sales Tax Amount</h5> </td><td><h5 class="margin-zero">Rs.<span id='taxamount'>1046.5</span></h5> </td>  
+        <td><h5 class="margin-zero">Sales Tax Amount</h5> </td><td><h5 class="margin-zero">Rs.<span id='taxamount'>0</span></h5> </td>  
       </tr>
       <tr>
-       <td><h5 class="margin-zero">Total Bill</h5> </td><td><h5 class="margin-zero">Rs.<span id='totalbill'>9100</span></h5> </td> 
+       <td><h5 class="margin-zero">Total Bill</h5> </td><td><h5 class="margin-zero">Rs.<span id='totalbill'>0</span></h5> </td> 
      </tr>
    </table>
  </div>
@@ -145,11 +149,12 @@
               </tr> 
             </table>
           </div>
-    
   </div>
-  
-</div>
-<table id="datatable" class="table table-bordered dt-responsive nowrap" style=" overflow-x: auto;border-collapse: collapse; border-spacing: 0; width: 100%;">
+  </div>
+
+<div class="row">
+  <div class="col-md-12">
+  <table id="datatable" class="table table-bordered dt-responsive nowrap" style=" overflow-x: auto;border-collapse: collapse; border-spacing: 0; width: 100%;">
   <thead>
     <tr> 
       <th>Item ID</th>
@@ -161,6 +166,21 @@
   <tbody id="tbody">
   </tbody>
 </table>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+      
+  
+          <button class="btn btn-primary  btn-block waves-effect waves-light" style="width:100%;" onclick="Search2(this.value);" id="paycashwithprint" type="button" value="paycashwithprint">Pay Cash with Print </button>
+  </div>
+  <div class="col-md-2">
+          <button class="btn btn-primary  btn-block waves-effect waves-light" style="width:100%;" onclick="Search2(this.value);" id="paycashwithoutprint" type="button" value="paycashwithoutprint">Pay Cash without Print </button>
+  </div>
+  <div class="col-md-2">
+          <button class="btn btn-primary  btn-block waves-effect waves-light" style="width:100%;" onclick="Search2(this.value);" id="paywithcard" type="button" value="paywithcard">Pay with Card </button>
+  </div>
+</div>
 </div>
 </div> <!-- end col -->
 </div>
@@ -189,7 +209,7 @@
 <script src="assets/pages/jquery.datatable.init.js"></script>
 <script src="assets/plugins/sweet-alert2/sweetalert2.min.js"></script>
 <script src="assets/pages/jquery.sweet-alert.init.js"></script>
-<script src="functions/FBRTransactions2.js"></script>
+<script src="functions/FBRTransactions.js"></script>
 <!-- Plugins js -->
 <script src="assets/plugins/moment/moment.js"></script>
 <script src="assets/plugins/daterangepicker/daterangepicker.js"></script>

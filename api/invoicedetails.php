@@ -49,27 +49,23 @@ else {
 
 }
   
-    $query = "(SELECT RTT.store,RTT.TRANSACTIONID,cast(RPT.STARTDATE as Date)  STARTDATE ,B.ORDERTYPE,EC.NAME AS HNAME,ECPT.NAME AS INAME, (RTST.QTY *-1) QTY,RTST.PRICE,
-RTST.DISCAMOUNT * -1 DISCAMOUNT, RTST.TRANSACTIONSTATUS,
-CASE WHEN TGD.TAXCODE = 'SRV CHARGE' THEN  (RTST.TAXAMOUNT *-1)  ELSE 0 END SERVICETAX,
-CASE WHEN TGD.TAXCODE = 'SRV CHARGE' THEN  0  ELSE (RTST.TAXAMOUNT * -1 ) END SALESTAX, 
+    $query = "SELECT RTT.store,RTT.TRANSACTIONID,RPT.STARTDATE AS  ORDERDATE ,cast(RPT.STARTDATE as Date)  STARTDATE ,B.ORDERTYPE,EC.NAME AS HNAME,ECPT.NAME AS INAME, (RTST.QTY *-1) QTY,RTST.PRICE,
+RTST.DISCAMOUNT * -1 DISCAMOUNT, RTST.TRANSACTIONSTATUS, 
 RTST.NETAMOUNT * -1 NETAMOUNT,GETDATE(),B.PERSONS,RTST.ITEMID,RTST.LINENUM,REFERENCENAME as CustomerNAme  , CONTACTNUMBER as CustomerContact ,ADDRESS as CustomerAddress 
 FROM RETAILTRANSACTIONTABLE RTT
 INNER JOIN RETAILTRANSACTIONSALESTRANS RTST ON RTST.TRANSACTIONID = RTT.TRANSACTIONID
 AND RTT.DATAAREAID   =RTST.DATAAREAID
 INNER JOIN INVENTTABLE IT ON IT.ITEMID = RTST.ITEMID AND IT.DATAAREAID = RTST.DATAAREAID
 LEFT JOIN RETAILPOSBATCHTABLE RPT on RPT.BATCHID = RTT.BATCHID AND RTT.STORE = RPT.STOREID
-LEFT JOIN RBOBOOKINGS B on B.BOOKINGID = RTT.COMMENT_
+LEFT JOIN ax.RBOBOOKINGS B on B.BOOKINGID = RTT.COMMENT
 LEFT JOIN ECORESPRODUCTTRANSLATION ECPT ON ECPT.PRODUCT       = IT.PRODUCT
 LEFT JOIN ECORESPRODUCTCATEGORY ECP on IT.PRODUCT = ECP.PRODUCT
 LEFT JOIN ECORESCATEGORY EC on ec.RECID  = ECP.CATEGORY
 LEFT JOIN HCMWORKER HW ON HW.PERSONNELNUMBER = RTT.STAFF
-LEFT JOIN DIRPARTYTABLE DP ON DP.RECID = HW.PERSON
-LEFT JOIN SALESTABLE ST ON ST.SALESID = RTT.SALESORDERID AND ST.DATAAREAID = RTT.DATAAREAID
-LEFT JOIN TAXGROUPDATA TGD ON TGD.TAXGROUP = ST.TAXGROUP AND TGD.DATAAREAID = ST.DATAAREAID
+LEFT JOIN DIRPARTYTABLE DP ON DP.RECID = HW.PERSON 
 where  (RTT.DATAAREAID IN ('T-RB'))
-AND (ECPT.LANGUAGEID ='en-us') ".$where." )";
-    echo 1;
+AND (ECPT.LANGUAGEID ='en-us') ".$where." ";
+ 
     $stmt = sqlsrv_query($StoreConnect, $query, array(), array("Scrollable" => 'static')) or die(sqlsrv_errors());
     if (!$query )  {
       $result  = "error";
@@ -77,7 +73,7 @@ AND (ECPT.LANGUAGEID ='en-us') ".$where." )";
     }
     else
     {
-      echo 2;
+      
       $result  = "success";
       $message = "query success";
       $empty="";
@@ -87,16 +83,23 @@ AND (ECPT.LANGUAGEID ='en-us') ".$where." )";
       {  
  
       	$dbcustomername= $res['CustomerNAme'];
+        $PERSONS= $res['PERSONS'];
+        $ORDERTYPE= $res['ORDERTYPE'];
+        $STARTDATE= $res['ORDERDATE'];
+        
+
       	$dbfield1 = $field1;
+
+ 
 
         $mysql_data[] = array
         (
-          "itemid" => $res['IName'],
-          "price" => number_format(round($res['price'])),
+          "itemid" => $res['INAME'],
+          "price" => number_format(round($res['PRICE'])),
           "QTY" => round($res['QTY']), 
           "NETAMOUNT" => number_format(round($res['NETAMOUNT'])),
-          "nettotal" => number_format(round($res['nettotal'])),
-          "nettotal2" => $res['nettotal']
+          "nettotal" => number_format(round($res['NETAMOUNT'])),
+          "nettotal2" => $res['NETAMOUNT']
           
         );
       }
@@ -107,6 +110,9 @@ AND (ECPT.LANGUAGEID ='en-us') ".$where." )";
   $data = array(
     "result"  => $result,
     "message" => $message,
+    // "STARTDATE" => $STARTDATE,    
+    "PERSONS"  => $PERSONS,
+    "ORDERTYPE" => $ORDERTYPE,
     "dbcustomername" => $dbcustomername,
     "staffusername" => $_SESSION['staffusername'], 
     "tax" => $tax,

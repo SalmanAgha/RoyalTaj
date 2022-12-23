@@ -17,7 +17,7 @@ if(isset($_POST['username']) &&  isset($_POST['pass']) )
 	$result = array(); 
 
 	include('../MainConnect.php');  
-	$query = "select staffusername,staffpass,store,dbname,username,password,server,tax 
+	$query = "select staffusername,staffpass,store,dbname,username,password,server,tax ,role,address
 	from tblfbrtransactions where staffusername = '".$username."'";
 	$stmt = sqlsrv_query($MainConnect, $query, array(), array("Scrollable" => 'static')) or die(sqlsrv_errors());
 	while ($row = sqlsrv_fetch_array($stmt))
@@ -29,7 +29,10 @@ if(isset($_POST['username']) &&  isset($_POST['pass']) )
 		$dbusername = $row["username"];
 		$dbpassword = $row["password"]; 
 		$server = $row["server"]; 
-		$tax = $row["tax"]; 
+		$tax = $row["tax"];
+		$role = $row["role"]; 
+		$address = $row["address"]; 
+		
 	} 
 
  
@@ -54,6 +57,8 @@ if(isset($_POST['username']) &&  isset($_POST['pass']) )
 		$_SESSION['dbpassword'] = $dbpassword;
 		$_SESSION['server'] = $server; 
 		$_SESSION['tax'] = $tax; 
+		$_SESSION['role'] = $role; 
+		$_SESSION['address'] = $address; 
 		
 
 
@@ -67,7 +72,7 @@ if(isset($_POST['username']) &&  isset($_POST['pass']) )
 
 
 	$data["username"] = $username;
-	$data["role"] = $store;
+	$data["role"] = $role;
 	$data["result"] = $result;
 	echo json_encode($data);
 

@@ -21,9 +21,14 @@
 
 <body>
     <div class="row">
-        <div class="col-lg-8 mx-auto">
+        
+        <div class="col-lg-5 mx-auto">
             <div class="card">
                 <div class="card-body invoice-head">
+                      <div class="float-right d-print-none justify-content-right">
+                                    <a href="javascript:window.print()" class="btn btn-info"><i class="fa fa-print"></i></a>
+                                  
+                                </div>
                     <div class="row">
                         <div class="col-md-12" style="text-align: center;">
 
@@ -55,8 +60,10 @@
                                         </div>
                                         <div style="clear: both">
                                             <h6 style="text-align: center;"><b>Table No </b>RT-Fatima Hall 1.</h6>
-                                            <h6 style="float: left"><b>Order Type </b> Dine In</h6>
-                                            <h6 style="float: right"><b>Date: </b>12/19/2022 20:17</h6>
+                                            <h6 style="text-align: center;"><b>Persons </b><span id="PERSONS">-</span></h6>
+                                            
+                                            <h6 style="float: left"><b>Order Type </b> <span id="ORDERTYPE">-</span></h6>
+                                            <h6 style="float: right"><b>Date: </b><span id="STARTDATE">-</span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -102,13 +109,7 @@
 
                             </div>
 
-                            <div class="col-lg-12 col-xl-4">
-                                <div class="float-right d-print-none justify-content-right">
-                                    <a href="javascript:window.print()" class="btn btn-info"><i class="fa fa-print"></i></a>
-                                    <a href="#" class="btn btn-primary">Submit</a>
-                                    <a href="#" class="btn btn-danger">Cancel</a>
-                                </div>
-                            </div>
+                          
                         </div>
                     </div>
                 </div><!--end card-->

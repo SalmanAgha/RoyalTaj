@@ -104,10 +104,10 @@
           <td><h5 class="margin-zero">Customer Name</h5> </td><td><h5 class="margin-zero"><span id='custname'>-</span></h5> </td>
         </tr>
         <tr>
-          <td><h5 class="margin-zero">Table No. </h5> </td><td><h5 class="margin-zero"><span id='tablenumber'>10</span></h5> </td> 
+          <td><h5 class="margin-zero">Table No. </h5> </td><td><h5 class="margin-zero"><span id='tablenumber'>-</span></h5> </td> 
         </tr>
         <tr>
-          <td><h5 class="margin-zero">Person</h5> </td><td><h5 class="margin-zero"><span id='persons'>10</span></h5> </td>  
+          <td><h5 class="margin-zero">Person</h5> </td><td><h5 class="margin-zero"><span id='persons'>-</span></h5> </td>  
         </tr>
         <tr>
          <td><h5 class="margin-zero">Transection ID</h5> </td><td><h5 class="margin-zero"><span id='transid'>-</span></h5> </td> 
@@ -135,6 +135,8 @@
  </div>
 </div>
 </div>
+
+
 <div class="row">
   <div class="col-md-12">
   <table id="datatable" class="table table-bordered dt-responsive nowrap" style=" overflow-x: auto;border-collapse: collapse; border-spacing: 0; width: 100%;">
