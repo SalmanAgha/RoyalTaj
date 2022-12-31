@@ -40,8 +40,13 @@
                                 </div><!--end auth-logo-box-->
 <center>
                             <div class="login-logo">
+<<<<<<< HEAD
                                 <br><br>
                                 <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
+=======
+                                <br><br> 
+                                    <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
+>>>>>>> 26526ee3d24c3575258055a3d5ae78eb153659d1
                                 <p style="font-size: 14px;" id="date"></p>
                               <p style="font-size: 20px;" id="time" class="bold"></p>
                             </div>

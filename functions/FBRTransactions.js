@@ -16,12 +16,40 @@ function table(){
 }
 
 
+function Fbrtrans(){
+    
+
+     var fbrid = $("#fbrid").val();
+    var transid = $("#transid").text();
+       var finaltotal = $("#totalbill").text();
+
+           $.ajax( {
+    url: "api/fbrapi.php",
+    method: "POST",
+    data: {
+    fbrid:fbrid,
+    transid:transid,
+    finaltotal:finaltotal
+  },
+    dataType: "JSON",
+    success: function (data) 
+    {
+      var result = data.result;
+      alert(result);
+      location.reload();
+
+    }});
+
+}
+
+
+
 function Search(){
     $("#tbody").html('');
     // var store = $("#storeid").val();
     var field1 = $("#field1").val();
        $.ajax( {
-    url: "api/tblMainData.php",
+    url: "api/tblMainData2.php",
     method: "POST",
     data: {field1:field1},
     dataType: "JSON",
@@ -31,6 +59,11 @@ function Search(){
       var dbcustomername = data.dbcustomername;
       var dbfield1 = data.dbfield1;
       var tax = data.tax; 
+      var fbrid = data.fbrid; 
+      // alert(data.totalamount);
+        var finaltotal2='';
+     
+  $("#fbrid").val(fbrid);
       
       $("#custname").text(dbcustomername);
       $("#transid").text(dbfield1);
@@ -40,8 +73,8 @@ function Search(){
  
       var td ='';
       var finaltotal='';
-      var finaltotal2='';
-      for (var i = 0; i < result.length -1; i++) {
+    
+      for (var i = 0; i < result.length ; i++) {
         td += '<tr>'+
         '<td><span>'+result[i].itemid+'</span></td>'+
         '<td><span>'+result[i].QTY+'</span></td>'+
@@ -49,12 +82,16 @@ function Search(){
         '<td><span>'+result[i].NETAMOUNT+'</span></td>'+ 
         '</tr>';
         finaltotal = result[i].nettotal; 
-        finaltotal2 = result[i].nettotal2;        
+              
 
       }
- 
+   finaltotal2 = data.totalamount; 
+   alert(finaltotal2);
 finaltotal2 = (parseInt(finaltotal2)).toFixed(2);
        $("#totalbill").text(finaltotal2);
+       $("#tablenumber").text(4);
+        $("#persons").text(7);       
+       
        var taxamount = ( (parseInt(finaltotal2) * 11.5)/100);
        // alert(finaltotal2);
        $("#taxamount").text(taxamount);
@@ -63,7 +100,7 @@ finaltotal2 = (parseInt(finaltotal2)).toFixed(2);
         td += '<tr>'+
         '<td colspan="3">Total</span></td>'+
          
-        '<td><span>'+finaltotal+'</span></td>'+ 
+        '<td><span>'+finaltotal2+'</span></td>'+ 
         '</tr>';
 
       $("#tbody").html(td);

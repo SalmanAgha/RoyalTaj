@@ -95,11 +95,11 @@ else {
       $result  = "success";
       $message = "query success";
       $empty="";
-
+  $totalamount = 0;
 
       while ($res = sqlsrv_fetch_array($stmt))
       {  
- 
+   $totalamount = $totalamount + $res['NETAMOUNT'];
       	$dbcustomername= $res['CustomerNAme'];
       	$dbfield1 = $field1;
 
@@ -120,6 +120,7 @@ else {
 // Prepare data
   $data = array(
     "result"  => $result,
+    "totalbill"  => $totalamount,    
     "message" => $message,
     "dbcustomername" => $dbcustomername,
     "staffusername" => $_SESSION['staffusername'], 

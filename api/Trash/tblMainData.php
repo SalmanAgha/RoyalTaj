@@ -41,7 +41,7 @@ if(  isset($_POST['field1']))
      if($StoreConnect)
   {
 
-$where = ' and ';
+$where = 'where';
 // $field1 = 'RTGUL-RTGC-175117';
 if($field1 != ""){
 	$where .= " RTT.transactionid='".$field1."' ";
@@ -54,47 +54,26 @@ else {
 
 
 
-//     $query = " select RTT.CUSTACCOUNT
-//  ,DIRPARTYTABLE.name as CustomerNAme 
-//  , RTST.itemid,ECORESPRODUCTTRANSLATION.NAME as ItemNAme,RTST.price, abs(RTST.QTY) as QTY, abs(RTST.NETAMOUNT) as NETAMOUNT
-// ,( select abs(sum(RL.NETAMOUNT))
-//  from  RETAILTRANSACTIONSALESTRANS RL  
-//  where RL.transactionid=RTT.transactionid) as nettotal
-//  from  RETAILTRANSACTIONSALESTRANS RTST 
-//  inner join RETAILTRANSACTIONTABLE RTT on RTT.TRANSACTIONID= RTST.TRANSACTIONID  
-//  inner join CUSTTABLE on custtable.accountnum = Rtt.CustAccount
-//  inner join DIRPARTYTABLE on Custtable.PARTY = DIRPARTYTABLE.RECID
-//  inner join Inventtable on INventtable.itemid = RTST.ITEMID
-//  inner join ECORESPRODUCTTRANSLATION on Inventtable.PRODUCT = ECORESPRODUCTTRANSLATION.PRODUCT
-//   ".$where." ";
-
-    $query = "SELECT RTT.store,RTT.TRANSACTIONID,RPT.STARTDATE AS  ORDERDATE ,cast(RPT.STARTDATE as Date)  STARTDATE ,B.ORDERTYPE,EC.NAME AS HNAME,ECPT.NAME AS INAME, (RTST.QTY *-1) QTY,RTST.PRICE,
-RTST.DISCAMOUNT * -1 DISCAMOUNT, RTST.TRANSACTIONSTATUS, 
-RTST.NETAMOUNT * -1 NETAMOUNT,GETDATE(),B.PERSONS,RTST.ITEMID,RTST.LINENUM,REFERENCENAME as CustomerNAme  , CONTACTNUMBER as CustomerContact ,ADDRESS as CustomerAddress 
-FROM RETAILTRANSACTIONTABLE RTT
-INNER JOIN RETAILTRANSACTIONSALESTRANS RTST ON RTST.TRANSACTIONID = RTT.TRANSACTIONID
-AND RTT.DATAAREAID   =RTST.DATAAREAID
-INNER JOIN INVENTTABLE IT ON IT.ITEMID = RTST.ITEMID AND IT.DATAAREAID = RTST.DATAAREAID
-LEFT JOIN RETAILPOSBATCHTABLE RPT on RPT.BATCHID = RTT.BATCHID AND RTT.STORE = RPT.STOREID
-LEFT JOIN ax.RBOBOOKINGS B on B.BOOKINGID = RTT.COMMENT
-LEFT JOIN ECORESPRODUCTTRANSLATION ECPT ON ECPT.PRODUCT       = IT.PRODUCT
-LEFT JOIN ECORESPRODUCTCATEGORY ECP on IT.PRODUCT = ECP.PRODUCT
-LEFT JOIN ECORESCATEGORY EC on ec.RECID  = ECP.CATEGORY
-LEFT JOIN HCMWORKER HW ON HW.PERSONNELNUMBER = RTT.STAFF
-LEFT JOIN DIRPARTYTABLE DP ON DP.RECID = HW.PERSON 
-where  (RTT.DATAAREAID IN ('T-RB'))
-AND (ECPT.LANGUAGEID ='en-us') ".$where." ";
- 
-
+    $query = " select RTT.CUSTACCOUNT
+ ,DIRPARTYTABLE.name as CustomerNAme 
+ , RTST.itemid,ECORESPRODUCTTRANSLATION.NAME as ItemNAme,RTST.price, abs(RTST.QTY) as QTY, abs(RTST.NETAMOUNT) as NETAMOUNT
+,( select abs(sum(RL.NETAMOUNT))
+ from  RETAILTRANSACTIONSALESTRANS RL  
+ where RL.transactionid=RTT.transactionid) as nettotal
+ from  RETAILTRANSACTIONSALESTRANS RTST 
+ inner join RETAILTRANSACTIONTABLE RTT on RTT.TRANSACTIONID= RTST.TRANSACTIONID  
+ inner join CUSTTABLE on custtable.accountnum = Rtt.CustAccount
+ inner join DIRPARTYTABLE on Custtable.PARTY = DIRPARTYTABLE.RECID
+ inner join Inventtable on INventtable.itemid = RTST.ITEMID
+ inner join ECORESPRODUCTTRANSLATION on Inventtable.PRODUCT = ECORESPRODUCTTRANSLATION.PRODUCT
+  ".$where." ";
     $stmt = sqlsrv_query($StoreConnect, $query, array(), array("Scrollable" => 'static')) or die(sqlsrv_errors());
     if (!$query )  {
-     
       $result  = "error";
       $message = "query error";
     }
     else
     {
-     
       $result  = "success";
       $message = "query success";
       $empty="";
@@ -108,12 +87,12 @@ AND (ECPT.LANGUAGEID ='en-us') ".$where." ";
 
         $mysql_data[] = array
         (
-          "itemid" => $res['INAME'],
-          "price" => number_format(round($res['PRICE'])),
+          "itemid" => $res['ItemNAme'],
+          "price" => number_format(round($res['price'])),
           "QTY" => round($res['QTY']), 
           "NETAMOUNT" => number_format(round($res['NETAMOUNT'])),
-          "nettotal" => number_format(round($res['NETAMOUNT'])),
-          "nettotal2" => $res['NETAMOUNT']
+          "nettotal" => number_format(round($res['nettotal'])),
+          "nettotal2" => $res['nettotal']
           
         );
       }
