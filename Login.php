@@ -42,7 +42,7 @@
                             <div class="login-logo">
 <<<<<<< HEAD
                                 <br><br>
-                                <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
+                                <p style="font-size: 16px;"><strong>Edit By Rabeet Siddiqui </strong></p>
 =======
                                 <br><br> 
                                     <p style="font-size: 16px;"><strong>Restaurant Login </strong></p>
